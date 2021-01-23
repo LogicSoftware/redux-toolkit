@@ -1,4 +1,3 @@
-import createNextState, { Draft, isDraft, isDraftable } from 'immer'
 import { AnyAction, Action, Reducer } from 'redux'
 import {
   executeReducerBuilderCallback,
@@ -37,18 +36,12 @@ export type ActionMatcherDescriptionCollection<S> = Array<
  * `undefined` state to determine the initial state. Instead, the initial
  * state is explicitly specified as an argument to `createReducer()`.
  *
- * In addition, a case reducer can choose to mutate the passed-in `state`
- * value directly instead of returning a new state. This does not actually
- * cause the store state to be mutated directly; instead, thanks to
- * [immer](https://github.com/mweststrate/immer), the mutations are
- * translated to copy operations that result in a new state.
- *
  * @public
  */
 export type CaseReducer<S = any, A extends Action = AnyAction> = (
-  state: Draft<S>,
+  state: S,
   action: A
-) => S | void | Draft<S>
+) => S | void
 
 /**
  * A mapping from action types to case reducers for `createReducer()`.
@@ -67,14 +60,6 @@ export type CaseReducers<S, AS extends Actions> = {
  * A utility function that allows defining a reducer as a mapping from action
  * type to *case reducer* functions that handle these action types. The
  * reducer's initial state is passed as the first argument.
- *
- * @remarks
- * The body of every case reducer is implicitly wrapped with a call to
- * `produce()` from the [immer](https://github.com/mweststrate/immer) library.
- * This means that rather than returning a new state object, you can also
- * mutate the passed-in state object directly; these mutations will then be
- * automatically and efficiently translated into copies, giving you both
- * convenience and immutability.
  *
  * @overloadSummary
  * This overload accepts a callback function that receives a `builder` object as its argument.
@@ -137,13 +122,7 @@ export function createReducer<S>(
  * type to *case reducer* functions that handle these action types. The
  * reducer's initial state is passed as the first argument.
  *
- * The body of every case reducer is implicitly wrapped with a call to
- * `produce()` from the [immer](https://github.com/mweststrate/immer) library.
- * This means that rather than returning a new state object, you can also
- * mutate the passed-in state object directly; these mutations will then be
- * automatically and efficiently translated into copies, giving you both
- * convenience and immutability.
- * 
+ *
  * @overloadSummary
  * This overload accepts an object where the keys are string action types, and the values
  * are case reducer functions to handle those action types.
@@ -162,7 +141,7 @@ const counterReducer = createReducer(0, {
   decrement: (state, action) => state - action.payload
 })
 ```
- 
+
  * Action creators that were generated using [`createAction`](./createAction) may be used directly as the keys here, using computed property syntax:
 
 ```js
@@ -212,41 +191,7 @@ export function createReducer<S>(
 
     return caseReducers.reduce((previousState, caseReducer): S => {
       if (caseReducer) {
-        if (isDraft(previousState)) {
-          // If it's already a draft, we must already be inside a `createNextState` call,
-          // likely because this is being wrapped in `createReducer`, `createSlice`, or nested
-          // inside an existing draft. It's safe to just pass the draft to the mutator.
-          const draft = previousState as Draft<S> // We can assume this is already a draft
-          const result = caseReducer(draft, action)
-
-          if (typeof result === 'undefined') {
-            return previousState
-          }
-
-          return result as S
-        } else if (!isDraftable(previousState)) {
-          // If state is not draftable (ex: a primitive, such as 0), we want to directly
-          // return the caseReducer func and not wrap it with produce.
-          const result = caseReducer(previousState as any, action)
-
-          if (typeof result === 'undefined') {
-            if (previousState === null) {
-              return previousState
-            }
-            throw Error(
-              'A case reducer on a non-draftable value must not return undefined'
-            )
-          }
-
-          return result as S
-        } else {
-          // @ts-ignore createNextState() produces an Immutable<Draft<S>> rather
-          // than an Immutable<S>, and TypeScript cannot find out how to reconcile
-          // these two types.
-          return createNextState(previousState, (draft: Draft<S>) => {
-            return caseReducer(draft, action)
-          })
-        }
+        return caseReducer(previousState as any, action) as S
       }
 
       return previousState

@@ -17,6 +17,7 @@ import { expectType } from './helpers'
       expectType<{ type: 'increment'; payload: string }>(action)
       // @ts-expect-error
       expectType<{ type: 'decrement'; payload: number }>(action)
+      return state
     })
 
     builder.addCase('increment', (state, action) => {
@@ -26,6 +27,7 @@ import { expectType } from './helpers'
       expectType<{ type: 'decrement' }>(action)
       // @ts-expect-error - this cannot be inferred and has to be manually specified
       expectType<{ type: 'increment'; payload: number }>(action)
+      return state
     })
 
     builder.addCase(

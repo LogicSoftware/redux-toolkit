@@ -92,7 +92,7 @@ export type AsyncThunkPayloadCreator<Returned, ThunkArg = void, ThunkApiConfig e
 export type AsyncThunkPayloadCreatorReturnValue<Returned, ThunkApiConfig extends AsyncThunkConfig> = Promise<Returned | RejectWithValue<GetRejectValue<ThunkApiConfig>>> | Returned | RejectWithValue<GetRejectValue<ThunkApiConfig>>;
 
 // @public
-export type CaseReducer<S = any, A extends Action = AnyAction> = (state: Draft<S>, action: A) => S | void | Draft<S>;
+export type CaseReducer<S = any, A extends Action = AnyAction> = (state: S, action: A) => S | void;
 
 // @public
 export type CaseReducerActions<CaseReducers extends SliceCaseReducers<any>> = {

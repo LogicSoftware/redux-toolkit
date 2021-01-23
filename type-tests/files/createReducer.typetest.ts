@@ -54,19 +54,6 @@ import { expectType } from './helpers'
   })
 }
 
-/*
- * Test: createReducer() ensures state type is mutable within a case reducer.
- */
-{
-  const initialState: { readonly counter: number } = { counter: 0 }
-
-  createReducer(initialState, {
-    increment: state => {
-      state.counter += 1
-    }
-  })
-}
-
 /** Test:  alternative builder callback for actionMap */
 {
   const increment = createAction<number, 'increment'>('increment')
