@@ -112,9 +112,6 @@ export type CaseReducerWithPrepare<State, Action extends PayloadAction> = {
     prepare: PrepareAction<Action['payload']>;
 };
 
-// @public (undocumented)
-export type Comparer<T> = (a: T, b: T) => number;
-
 // @public
 export type ConfigureEnhancersCallback = (defaultEnhancers: StoreEnhancer[]) => StoreEnhancer[];
 
@@ -138,15 +135,6 @@ export function createAction<PA extends PrepareAction<any>, T extends string = s
 
 // @public (undocumented)
 export function createAsyncThunk<Returned, ThunkArg = void, ThunkApiConfig extends AsyncThunkConfig = {}>(typePrefix: string, payloadCreator: AsyncThunkPayloadCreator<Returned, ThunkArg, ThunkApiConfig>, options?: AsyncThunkOptions<ThunkArg, ThunkApiConfig>): AsyncThunk<Returned, ThunkArg, ThunkApiConfig>;
-
-// @public
-export const createDraftSafeSelector: typeof createSelector;
-
-// @public (undocumented)
-export function createEntityAdapter<T>(options?: {
-    selectId?: IdSelector<T>;
-    sortComparer?: false | Comparer<T>;
-}): EntityAdapter<T>;
 
 // @public
 export function createImmutableStateInvariantMiddleware(options?: ImmutableStateInvariantMiddlewareOptions): Middleware;
@@ -177,100 +165,11 @@ export interface CreateSliceOptions<State = any, CR extends SliceCaseReducers<St
 
 export { current }
 
-// @public (undocumented)
-export interface Dictionary<T> extends DictionaryNum<T> {
-    // (undocumented)
-    [id: string]: T | undefined;
-}
-
 export { Draft }
 
 // @public
 export interface EnhancedStore<S = any, A extends Action = AnyAction, M extends Middlewares<S> = Middlewares<S>> extends Store<S, A> {
     dispatch: DispatchForMiddlewares<M> & Dispatch<A>;
-}
-
-// @public (undocumented)
-export interface EntityAdapter<T> extends EntityStateAdapter<T> {
-    // (undocumented)
-    getInitialState(): EntityState<T>;
-    // (undocumented)
-    getInitialState<S extends object>(state: S): EntityState<T> & S;
-    // (undocumented)
-    getSelectors(): EntitySelectors<T, EntityState<T>>;
-    // (undocumented)
-    getSelectors<V>(selectState: (state: V) => EntityState<T>): EntitySelectors<T, V>;
-    // (undocumented)
-    selectId: IdSelector<T>;
-    // (undocumented)
-    sortComparer: false | Comparer<T>;
-}
-
-// @public (undocumented)
-export type EntityId = number | string;
-
-// @public (undocumented)
-export interface EntitySelectors<T, V> {
-    // (undocumented)
-    selectAll: (state: V) => T[];
-    // (undocumented)
-    selectById: (state: V, id: EntityId) => T | undefined;
-    // (undocumented)
-    selectEntities: (state: V) => Dictionary<T>;
-    // (undocumented)
-    selectIds: (state: V) => EntityId[];
-    // (undocumented)
-    selectTotal: (state: V) => number;
-}
-
-// @public (undocumented)
-export interface EntityState<T> {
-    // (undocumented)
-    entities: Dictionary<T>;
-    // (undocumented)
-    ids: EntityId[];
-}
-
-// @public (undocumented)
-export interface EntityStateAdapter<T> {
-    // (undocumented)
-    addMany<S extends EntityState<T>>(state: PreventAny<S, T>, entities: T[] | Record<EntityId, T>): S;
-    // (undocumented)
-    addMany<S extends EntityState<T>>(state: PreventAny<S, T>, entities: PayloadAction<T[] | Record<EntityId, T>>): S;
-    // (undocumented)
-    addOne<S extends EntityState<T>>(state: PreventAny<S, T>, entity: T): S;
-    // (undocumented)
-    addOne<S extends EntityState<T>>(state: PreventAny<S, T>, action: PayloadAction<T>): S;
-    // (undocumented)
-    removeAll<S extends EntityState<T>>(state: PreventAny<S, T>): S;
-    // (undocumented)
-    removeMany<S extends EntityState<T>>(state: PreventAny<S, T>, keys: EntityId[]): S;
-    // (undocumented)
-    removeMany<S extends EntityState<T>>(state: PreventAny<S, T>, keys: PayloadAction<EntityId[]>): S;
-    // (undocumented)
-    removeOne<S extends EntityState<T>>(state: PreventAny<S, T>, key: EntityId): S;
-    // (undocumented)
-    removeOne<S extends EntityState<T>>(state: PreventAny<S, T>, key: PayloadAction<EntityId>): S;
-    // (undocumented)
-    setAll<S extends EntityState<T>>(state: PreventAny<S, T>, entities: T[] | Record<EntityId, T>): S;
-    // (undocumented)
-    setAll<S extends EntityState<T>>(state: PreventAny<S, T>, entities: PayloadAction<T[] | Record<EntityId, T>>): S;
-    // (undocumented)
-    updateMany<S extends EntityState<T>>(state: PreventAny<S, T>, updates: Update<T>[]): S;
-    // (undocumented)
-    updateMany<S extends EntityState<T>>(state: PreventAny<S, T>, updates: PayloadAction<Update<T>[]>): S;
-    // (undocumented)
-    updateOne<S extends EntityState<T>>(state: PreventAny<S, T>, update: Update<T>): S;
-    // (undocumented)
-    updateOne<S extends EntityState<T>>(state: PreventAny<S, T>, update: PayloadAction<Update<T>>): S;
-    // (undocumented)
-    upsertMany<S extends EntityState<T>>(state: PreventAny<S, T>, entities: T[] | Record<EntityId, T>): S;
-    // (undocumented)
-    upsertMany<S extends EntityState<T>>(state: PreventAny<S, T>, entities: PayloadAction<T[] | Record<EntityId, T>>): S;
-    // (undocumented)
-    upsertOne<S extends EntityState<T>>(state: PreventAny<S, T>, entity: T): S;
-    // (undocumented)
-    upsertOne<S extends EntityState<T>>(state: PreventAny<S, T>, entity: PayloadAction<T>): S;
 }
 
 // @public (undocumented)
@@ -287,9 +186,6 @@ export function getDefaultMiddleware<S = any, O extends Partial<GetDefaultMiddle
 
 // @public
 export function getType<T extends string>(actionCreator: PayloadActionCreator<any, T>): T;
-
-// @public (undocumented)
-export type IdSelector<T> = (model: T) => EntityId;
 
 // @public
 export interface ImmutableStateInvariantMiddlewareOptions {
@@ -457,12 +353,6 @@ export { ThunkDispatch }
 
 // @public (undocumented)
 export function unwrapResult<R extends UnwrappableAction>(action: R): UnwrappedActionPayload<R>;
-
-// @public (undocumented)
-export type Update<T> = {
-    id: EntityId;
-    changes: Partial<T>;
-};
 
 // @public
 export type ValidateSliceCaseReducers<S, ACR extends SliceCaseReducers<S>> = ACR & {

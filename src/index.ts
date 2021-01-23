@@ -14,7 +14,6 @@ export {
   OutputSelector,
   ParametricSelector
 } from 'reselect'
-export { createDraftSafeSelector } from './createDraftSafeSelector'
 export { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 // We deliberately enable Immer's ES5 support, on the grounds that
@@ -89,19 +88,6 @@ export {
   ActionReducerMapBuilder
 } from './mapBuilders'
 export { MiddlewareArray } from './utils'
-
-export { createEntityAdapter } from './entities/create_adapter'
-export {
-  Dictionary,
-  EntityState,
-  EntityAdapter,
-  EntitySelectors,
-  EntityStateAdapter,
-  EntityId,
-  Update,
-  IdSelector,
-  Comparer
-} from './entities/models'
 
 export {
   AsyncThunk,
