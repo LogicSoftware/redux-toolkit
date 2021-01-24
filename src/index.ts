@@ -1,12 +1,4 @@
-import { enableES5 } from 'immer'
 export * from 'redux'
-export {
-  default as createNextState,
-  Draft,
-  current,
-  freeze,
-  original
-} from 'immer'
 export {
   createSelector,
   Selector,
@@ -15,12 +7,6 @@ export {
   ParametricSelector
 } from 'reselect'
 export { ThunkAction, ThunkDispatch } from 'redux-thunk'
-
-// We deliberately enable Immer's ES5 support, on the grounds that
-// we assume RTK will be used with React Native and other Proxy-less
-// environments.  In addition, that's how Immer 4 behaved, and since
-// we want to ship this in an RTK minor, we should keep the same behavior.
-enableES5()
 
 export {
   // js

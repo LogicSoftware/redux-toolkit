@@ -1,17 +1,15 @@
 {
-  "name": "@reduxjs/toolkit",
+  "name": "@logicsoftware/redux-toolkit",
   "version": "1.5.0",
-  "description": "The official, opinionated, batteries-included toolset for efficient Redux development",
   "repository": "https://github.com/reduxjs/redux-toolkit",
+  "description": "Redux toolkit but without immer",
   "keywords": [
     "redux",
     "react",
     "starter",
     "toolkit",
     "reducer",
-    "slice",
-    "immer",
-    "immutable"
+    "slice"
   ],
   "publishConfig": {
     "access": "public"
@@ -61,7 +59,6 @@
     "src"
   ],
   "dependencies": {
-    "immer": "^8.0.0",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0"
