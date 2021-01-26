@@ -56,6 +56,9 @@ export type CaseReducers<S, AS extends Actions> = {
   [T in keyof AS]: AS[T] extends Action ? CaseReducer<S, AS[T]> : void
 }
 
+type InitialStateFn<S> = () => S
+type InitialState<S> = S | InitialStateFn<S>
+
 /**
  * A utility function that allows defining a reducer as a mapping from action
  * type to *case reducer* functions that handle these action types. The
@@ -113,7 +116,7 @@ createReducer(
  * @public
  */
 export function createReducer<S>(
-  initialState: S,
+  initialState: InitialState<S>,
   builderCallback: (builder: ActionReducerMapBuilder<S>) => void
 ): Reducer<S>
 
@@ -159,14 +162,14 @@ export function createReducer<
   S,
   CR extends CaseReducers<S, any> = CaseReducers<S, any>
 >(
-  initialState: S,
+  initialState: InitialState<S>,
   actionsMap: CR,
   actionMatchers?: ActionMatcherDescriptionCollection<S>,
   defaultCaseReducer?: CaseReducer<S>
 ): Reducer<S>
 
 export function createReducer<S>(
-  initialState: S,
+  initialState: InitialState<S>,
   mapOrBuilderCallback:
     | CaseReducers<S, any>
     | ((builder: ActionReducerMapBuilder<S>) => void),
@@ -178,7 +181,11 @@ export function createReducer<S>(
       ? executeReducerBuilderCallback(mapOrBuilderCallback)
       : [mapOrBuilderCallback, actionMatchers, defaultCaseReducer]
 
-  return function(state = initialState, action): S {
+  let initialStateFn = typeof initialState === 'function' ?
+    initialState as InitialStateFn<S> :
+    () => initialState as S
+
+  return function(state = initialStateFn(), action): S {
     let caseReducers = [
       actionsMap[action.type],
       ...finalActionMatchers

@@ -25,6 +25,19 @@ type ToggleTodoReducer = CaseReducer<
 >
 
 describe('createReducer', () => {
+  describe('initial state', () => {
+    const initialAction = { type: '', payload: undefined }
+    const createTodosReducer = (initialState) => createReducer(initialState, {})
+
+    it('should handle initial state', () => {
+      expect(createTodosReducer([] as TodoState)(undefined, initialAction)).toEqual([])
+    })
+
+    it('should handle initial state passed as function', () => {
+      expect(createTodosReducer(() => [] as TodoState)(undefined, initialAction)).toEqual([])
+    })
+  })
+
   describe('given pure reducers with immutable updates', () => {
     const addTodo: AddTodoReducer = (state, action) => {
       const { newTodo } = action.payload

@@ -135,10 +135,10 @@ export function createAsyncThunk<Returned, ThunkArg = void, ThunkApiConfig exten
 export function createImmutableStateInvariantMiddleware(options?: ImmutableStateInvariantMiddlewareOptions): Middleware;
 
 // @public
-export function createReducer<S>(initialState: S, builderCallback: (builder: ActionReducerMapBuilder<S>) => void): Reducer<S>;
+export function createReducer<S>(initialState: InitialState<S>, builderCallback: (builder: ActionReducerMapBuilder<S>) => void): Reducer<S>;
 
 // @public
-export function createReducer<S, CR extends CaseReducers<S, any> = CaseReducers<S, any>>(initialState: S, actionsMap: CR, actionMatchers?: ActionMatcherDescriptionCollection<S>, defaultCaseReducer?: CaseReducer<S>): Reducer<S>;
+export function createReducer<S, CR extends CaseReducers<S, any> = CaseReducers<S, any>>(initialState: InitialState<S>, actionsMap: CR, actionMatchers?: ActionMatcherDescriptionCollection<S>, defaultCaseReducer?: CaseReducer<S>): Reducer<S>;
 
 export { createSelector }
 
