@@ -527,3 +527,15 @@ const value = actionCreators.anyKey
     return { doNothing, setData, slice }
   }
 }
+
+/** Test: pass init state as function to createSlice should be possible */
+
+const counterSliceWithInitStateFunc = createSlice({
+  name: 'counter',
+  initialState: () => 0,
+  reducers: {
+    increment: (state: number, action) => state + action.payload,
+  }
+})
+
+expectType<number>(counterSliceWithInitStateFunc.reducer(5, { type: "dummy" }))

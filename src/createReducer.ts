@@ -57,7 +57,7 @@ export type CaseReducers<S, AS extends Actions> = {
 }
 
 type InitialStateFn<S> = () => S
-type InitialState<S> = S | InitialStateFn<S>
+export type InitialState<S> = S | InitialStateFn<S>
 
 /**
  * A utility function that allows defining a reducer as a mapping from action
