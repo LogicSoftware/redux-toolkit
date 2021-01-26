@@ -7,7 +7,12 @@ import {
   PrepareAction,
   _ActionCreatorWithPreparedPayload
 } from './createAction'
-import { CaseReducer, CaseReducers, createReducer, InitialState } from './createReducer'
+import {
+  CaseReducer,
+  CaseReducers,
+  createReducer,
+  InitialState
+} from './createReducer'
 import {
   ActionReducerMapBuilder,
   executeReducerBuilderCallback
@@ -74,7 +79,7 @@ export interface CreateSliceOptions<
   /**
    * The initial state to be returned by the slice reducer.
    */
-  initialState: InitialState<State>;
+  initialState: InitialState<State>
 
   /**
    * A mapping from action types to action-type-specific *case reducer*

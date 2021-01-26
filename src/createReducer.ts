@@ -181,9 +181,10 @@ export function createReducer<S>(
       ? executeReducerBuilderCallback(mapOrBuilderCallback)
       : [mapOrBuilderCallback, actionMatchers, defaultCaseReducer]
 
-  let initialStateFn = typeof initialState === 'function' ?
-    initialState as InitialStateFn<S> :
-    () => initialState as S
+  let initialStateFn =
+    typeof initialState === 'function'
+      ? (initialState as InitialStateFn<S>)
+      : () => initialState as S
 
   return function(state = initialStateFn(), action): S {
     let caseReducers = [
