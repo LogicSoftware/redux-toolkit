@@ -151,7 +151,7 @@ export function createSlice<State, CaseReducers extends SliceCaseReducers<State>
 // @public
 export interface CreateSliceOptions<State = any, CR extends SliceCaseReducers<State> = SliceCaseReducers<State>, Name extends string = string> {
     extraReducers?: CaseReducers<NoInfer<State>, any> | ((builder: ActionReducerMapBuilder<NoInfer<State>>) => void);
-    initialState: State;
+    initialState: InitialState<State>;
     name: Name;
     reducers: ValidateSliceCaseReducers<State, CR>;
 }
